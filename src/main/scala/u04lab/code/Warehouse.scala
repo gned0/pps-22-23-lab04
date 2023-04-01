@@ -52,17 +52,17 @@ object Warehouse {
   def apply(): Warehouse =
     WarehouseImpl()
   private case class WarehouseImpl() extends Warehouse:
-    private var itemList: u04lab.code.List[Item] = Nil()
+    private var _itemList: u04lab.code.List[Item] = Nil()
     def store(item: Item): Unit =
-      this.itemList = Cons(item, this.itemList)
+      this._itemList = Cons(item, this._itemList)
     def contains(itemCode: Int): Boolean =
-      List.contains(map(itemList)(i => i.code), itemCode)
+      List.contains(map(_itemList)(i => i.code), itemCode)
     def searchItems(tag: String): List[Item] =
-      List.filter(itemList)(i => List.contains(i.tags, tag))
+      List.filter(_itemList)(i => List.contains(i.tags, tag))
     def retrieve(code: Int): Option[Item] =
-      List.find(itemList)(i => i.code == code)
+      List.find(_itemList)(i => i.code == code)
     def remove(item: Item): Unit =
-      this.itemList = List.remove(this.itemList)(i => i == item)
+      this._itemList = List.remove(this._itemList)(i => i == item)
 }
 
 @main def mainWarehouse(): Unit =
