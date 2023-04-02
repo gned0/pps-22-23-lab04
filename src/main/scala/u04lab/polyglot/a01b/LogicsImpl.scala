@@ -19,7 +19,12 @@ class LogicsImpl(private val size: Int, private val mines: Int) extends Logics:
     )
   private var _selected: List[(Int, Int)] = Nil()
 
-  def neighbors(x: Int, y: Int): Int = ???
+  def neighbors(x: Int, y: Int): Int =
+    var count = 0
+    for(i <- x - 1 to x + 1)
+      for(j <- y - 1 to y + 1)
+        if List.contains(_minesList, (i, j)) then count = count + 1
+    count
 
   def hit(x: Int, y: Int): java.util.Optional[Integer] = (x, y) match
     case (_, _) if List.contains(_minesList, (x, y)) => OptionToOptional(None())
