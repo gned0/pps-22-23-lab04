@@ -21,21 +21,24 @@ class LogicsImpl(private val size: Int, private val mines: Int) extends Logics:
   private var _selected: List[(Int, Int)] = Nil()
   while(List.length(_minesList) != mines)
     _minesList = Cons((_r.nextInt(size-1), _r.nextInt(size-1)), _minesList)
-
+  println(_minesList)
   private def computeNeighbors(x: Int, y: Int): List[(Int, Int)] =
     var neighbors: List[(Int, Int)] = Nil()
     for(i <- x - 1 to x + 1)
       for(j <- y - 1 to y + 1)
-          neighbors = Cons((i,j), neighbors)
+          if(isBound(i) && isBound(j))
+            neighbors = Cons((i,j), neighbors)
     neighbors
 
+  def isBound(n: Int): Boolean = n >= 0 && n < size
 
   def hit(x: Int, y: Int): java.util.Optional[Integer] = (x, y) match
     case (_, _) if List.contains(_minesList, (x, y)) => OptionToOptional(None())
     case _ => _selected = Cons((x, y), _selected)
-              val neighbors = computeNeighbors(x, y)
+              var neighbors = computeNeighbors(x, y)
               val adjMines = List.length(List.filter(neighbors)(e => List.contains(_minesList, e)))
               if(adjMines == 0)
+                // neighbors.foreach(e => hit(e)
                 ???
               OptionToOptional(Some(adjMines))
 
