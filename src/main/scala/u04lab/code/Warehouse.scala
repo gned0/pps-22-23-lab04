@@ -58,11 +58,11 @@ object Warehouse {
     def store(item: Item): Unit =
       this._itemList = Cons(item, this._itemList)
     def contains(itemCode: Int): Boolean =
-      List.contains(map(_itemList)(i => i.code), itemCode)
+      List.contains(map(_itemList)(_.code), itemCode)
     def searchItems(tag: String): List[Item] =
       List.filter(_itemList)(i => List.contains(i.tags, tag))
     def retrieve(code: Int): Option[Item] =
-      List.find(_itemList)(i => i.code == code)
+      List.find(_itemList)(_.code == code)
     def remove(item: Item): Unit =
       this._itemList = List.remove(this._itemList)(i => i == item)
 }
