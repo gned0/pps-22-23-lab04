@@ -28,19 +28,28 @@ class LogicsImpl(private val size: Int, private val mines: Int) extends Logics:
       for(j <- y - 1 to y + 1)
           if(isBound(i) && isBound(j))
             neighbors = Cons((i,j), neighbors)
+            neighbors = List.filter(neighbors)(_ != (x, y))
+    println(neighbors)
     neighbors
 
   def isBound(n: Int): Boolean = n >= 0 && n < size
 
-  def hit(x: Int, y: Int): java.util.Optional[Integer] = (x, y) match
-    case (_, _) if List.contains(_minesList, (x, y)) => OptionToOptional(None())
-    case _ => _selected = Cons((x, y), _selected)
-              var neighbors = computeNeighbors(x, y)
-              val adjMines = List.length(List.filter(neighbors)(e => List.contains(_minesList, e)))
-              if(adjMines == 0)
-                // neighbors.foreach(e => hit(e)
-                ???
-              OptionToOptional(Some(adjMines))
+  def hit(x: Int, y: Int): java.util.Optional[Integer] =
+     if contains(_minesList, (x, y)) then OptionToOptional(None())
+     else
+       _selected = Cons((x, y), _selected)
+       var neighbors = computeNeighbors(x, y)
+       val adjMines = length(List.filter(neighbors)(e => contains(_minesList, e)))
+       if(adjMines == 0)
+         while(length(neighbors) != 0)
+           neighbors match
+             case Cons((i, j), Nil()) =>
+               neighbors = Nil()
+               if !contains(_selected, (i, j)) then hit(i, j)
+             case Cons((x,y), Cons(h, t)) =>
+               neighbors = Cons(h, t)
+               if !contains(_selected, (x, y)) then hit(x, y)
+       OptionToOptional(Some(adjMines))
 
   def won(): Boolean = length(_minesList) + length(_selected) == size*size
 

@@ -25,8 +25,7 @@ public class GUI extends JFrame {
             //System.out.println("hit "+p);
             Optional<Integer> result = logics.hit(p.getX(), p.getY());
             if (result.isPresent() && !logics.won()) {
-                bt.setText(String.valueOf(result.get()));
-                bt.setEnabled(false);
+                this.drawboard();
             } else {
                 System.out.println(logics.won() ? "WON" : "LOST");
                 System.exit(0);
@@ -42,6 +41,32 @@ public class GUI extends JFrame {
             }
         }
         this.setVisible(true);
+    }
+    private void drawBoard() {
+        for (var entry: this.buttons.entrySet()) {
+            // call the logic here
+            // if this button is a cell with counter, put the number
+            // if this button has a flag, put the flag
+            if(logics.getFlags().contains(entry.getValue())) {
+                String string = "F";
+                entry.getKey().setText(string);
+            }
+            if(logics.getCounters().contains(entry.getValue())) {
+                String string = Integer.valueOf(this.logics.computeAdjacentMines(entry.getValue()).size()).toString();
+                entry.getKey().setText(string);
+                entry.getKey().setEnabled(false);
+            }
+        }
+    }
+
+    private void drawBoard() {
+        for (var entry: this.buttons.entrySet()) {
+            if(logics.getCounters().contains(entry.getValue())) {
+                String string = Integer.valueOf(this.logics.computeAdjacentMines(entry.getValue()).size()).toString();
+                entry.getKey().setText(string);
+                entry.getKey().setEnabled(false);
+            }
+        }
     }
 
 }
