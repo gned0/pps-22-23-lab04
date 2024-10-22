@@ -17,3 +17,7 @@ object Option:
   def flatMap[A, B](opt: Option[A])(f: A => Option[B]): Option[B] = opt match
     case Some(a) => f(a)
     case _ => None()
+    
+  def toScalaOption[A](opt: u04lab.code.Option[A]): scala.Option[A] = opt match
+    case Some(a) => scala.Some(a)
+    case _ => scala.None

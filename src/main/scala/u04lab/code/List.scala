@@ -10,6 +10,9 @@ enum List[E]:
 
 // a companion object (i.e., module) for List
 object List:
+
+  def apply[E](elems: E*): List[E] = elems.foldRight(List.empty[E])((h, t) => cons(h, t))
+  
   def empty[E]: List[E] = Nil()
 
   def cons[E](h: E, t: List[E]): List[E] = Cons(h, t)
@@ -64,4 +67,13 @@ object List:
     case _ => Nil()
 
   def take[A](list: List[A], n: Int): List[A] = reverse(drop(reverse(list), length(list) - n))
+
 end List
+
+@main def testVariadic(): Unit =
+  println("Empty list: " + List())
+  println("Single element: " + List(1))
+  println("Multiple elements: " + List(1, 2, 3))
+  println("String list: " + List("a", "b", "c"))
+  val mixedList: List[Any] = List(1, "hello", true)
+  println("Mixed types: " + mixedList)
