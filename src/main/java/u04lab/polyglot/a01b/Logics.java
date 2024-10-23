@@ -10,5 +10,6 @@ public interface Logics {
 
     boolean won();
     
-    List<Pair<Integer, Integer>> getState();
+    Integer getCellState(int x, int y);
+
 }
