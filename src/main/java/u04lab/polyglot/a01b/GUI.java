@@ -5,6 +5,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import u04lab.polyglot.Pair;
+
 public class GUI extends JFrame {
 
     private static final long serialVersionUID = -6218820567019985015L;
@@ -23,9 +24,9 @@ public class GUI extends JFrame {
             final JButton bt = (JButton)e.getSource();
             final Pair<Integer,Integer> p = buttons.get(bt);
             //System.out.println("hit "+p);
-            Optional<Integer> result = logics.hit(p.getX(), p.getY());
+            Optional<Integer> result = logics.discover(p.getX(), p.getY());
             if (result.isPresent() && !logics.won()) {
-                this.drawboard();
+                this.updateBoard(logics.getState());
             } else {
                 System.out.println(logics.won() ? "WON" : "LOST");
                 System.exit(0);
@@ -42,32 +43,13 @@ public class GUI extends JFrame {
         }
         this.setVisible(true);
     }
-    private void drawBoard() {
-        for (var entry: this.buttons.entrySet()) {
-            // call the logic here
-            // if this button is a cell with counter, put the number
-            // if this button has a flag, put the flag
-            if(logics.getFlags().contains(entry.getValue())) {
-                String string = "F";
-                entry.getKey().setText(string);
-            }
-            if(logics.getCounters().contains(entry.getValue())) {
-                String string = Integer.valueOf(this.logics.computeAdjacentMines(entry.getValue()).size()).toString();
-                entry.getKey().setText(string);
-                entry.getKey().setEnabled(false);
-            }
-        }
-    }
-
-    private void drawBoard() {
-        for (var entry: this.buttons.entrySet()) {
-            if(logics.getCounters().contains(entry.getValue())) {
-                String string = Integer.valueOf(this.logics.computeAdjacentMines(entry.getValue()).size()).toString();
-                entry.getKey().setText(string);
-                entry.getKey().setEnabled(false);
-            }
-        }
+    
+    private void updateBoard(List<Pair<Integer,Integer>> state) {
+        buttons.forEach((b,p)-> {
+            if (state.contains(p)) {
+                b.setText("");
+                b.setEnabled(false);
+        });
     }
 
 }
-

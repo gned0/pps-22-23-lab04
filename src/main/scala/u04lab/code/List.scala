@@ -60,6 +60,11 @@ object List:
     case _ => None()
 
   def contains[A](list: List[A], elem: A): Boolean = !Option.isEmpty(find(list)(_ == elem))
+  
+  @tailrec
+  def foreach[A](list: List[A])(f: A => Unit): Unit = list match
+    case Cons(elem, rest) => f(elem); foreach(rest)(f)
+    case _ => ()
 
   def remove[A](list: List[A])(f: A => Boolean): List[A] = list match
     case Cons(elem, rest) if f(elem) => rest
